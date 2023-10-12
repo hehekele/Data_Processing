@@ -1,3 +1,5 @@
+# 上一步已经将索引分组了。这里是将索引和解释对应起来
+
 import pickle
 import json
 
@@ -44,13 +46,10 @@ pickle.dump(IDs, open(ID_path, 'wb'))
 
 
 id2exp = {}
-print(idx_set)
 for idx, sentence in enumerate(sentences):
     idx = str(idx)
     if idx in idx_set:
-        print(idx)
         id2exp[idx] = sentence['exp']
-        print(id2exp[idx])
 with open(id2exp_path, 'w', encoding='utf-8') as f:
     json.dump(id2exp, f, indent=4, ensure_ascii=False)
 

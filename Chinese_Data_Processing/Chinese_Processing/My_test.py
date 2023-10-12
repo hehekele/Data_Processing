@@ -62,19 +62,36 @@
 # print(words)
 
 
-import json
+# import json
+#
+# # JSON数据
+# json_data = '{"38": "\\u4ea4\\u901a\\u65b9\\u4fbf"}'
+#
+# # 解析JSON数据
+# parsed_data = json.loads(json_data)
+#
+# # 获取键为 "38" 的值并解码Unicode转义序列
+# value = parsed_data["38"].encode().decode('utf8')
+#
+# # 输出解码后的文本
+# print(value)
 
-# JSON数据
-json_data = '{"38": "\\u4ea4\\u901a\\u65b9\\u4fbf"}'
 
-# 解析JSON数据
-parsed_data = json.loads(json_data)
+# 输入的句子
+sentence = "出去_v 玩_v 了_u 那_r 么_q 多次_m"
 
-# 获取键为 "38" 的值并解码Unicode转义序列
-value = parsed_data["38"].encode().decode('utf8')
+import re
 
-# 输出解码后的文本
-print(value)
+# 输入的句子
+sentence = "出去_v 玩_v 了_u 那_r 么_q 多次_m"
+
+# 使用正则表达式提取下划线后面的英文字母
+matches = re.findall(r'_([a-zA-Z]+)', sentence)
+
+# 打印提取出的英文字母列表
+print(matches)
+
+
 
 
 

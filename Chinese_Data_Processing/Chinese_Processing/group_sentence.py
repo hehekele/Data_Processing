@@ -16,6 +16,8 @@ def now_time():
     """a string of current time"""
     return '[' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + ']: '
 
+# 先分词。分成一个一个词语。
+# 再生成k-shingles
 def get_k_shingles(raw_text, k=1):
     word = jieba.cut(raw_text)
     words = list(word)
@@ -26,7 +28,6 @@ def get_k_shingles(raw_text, k=1):
         k_words = words[start:(start + k)]
         k_shingle = ' '.join(k_words)
         shingles.append(k_shingle)
-        # print(shingles)
     return set(shingles)
 
 
@@ -35,6 +36,7 @@ sentences = pickle.load(open(sentence_path, 'rb'))
 
 minhash_dict = {}
 for idx, sentence in enumerate(sentences):
+    # 句子要满足如下条件
     if sentence['word_num'] < shingle_size:
         continue
     if sentence['pronoun_num'] > 0:
@@ -45,16 +47,22 @@ for idx, sentence in enumerate(sentences):
         continue
     exp = sentence['exp']
     shingle_set = get_k_shingles(exp, shingle_size)
+    # 为满足条件的生成Minhash对象
     mh = MinHash()
     for s in shingle_set:
+        # 将生成的哈希值合并到 MinHash 对象的内部状态中。
         mh.update(s.encode('utf8'))  # convert shingle s into MinHash
+    # 得到的 MinHash 对象 (mh) 存储在minhash_dict字典中
+    # 字典的键是句子的索引 idx，值是转换为 LeanMinHash 对象的 MinHash。
     minhash_dict[idx] = LeanMinHash(mh)
 print(now_time() + 'Created Minhash')
 del sentences  # to save memory
 
 for sim_threshold in sim_thresholds:  # create MinHash for once, when testing multiple similarity values
+    # 使用MinHashLSH 类的构造函数来实例化一个 LSH 索引对象。
     lsh = MinHashLSH(threshold=sim_threshold)  # create LSH index
     for idx, mh in minhash_dict.items():
+        # 使用lsh.insert()方法将MinHash对象插入到LSH索引中。
         lsh.insert(str(idx), mh)
     print(now_time() + 'Created LSH for similarity {}'.format(sim_threshold))
 
@@ -64,6 +72,7 @@ for sim_threshold in sim_thresholds:  # create MinHash for once, when testing mu
     for idx, mh in minhash_dict.items():
         if idx in queried_ids:
             continue
+        # 该函数根据 MinHash 值的相似性，找到与指定 MinHash 对象 mh 相似的其他数据项或对象
         one_group_ids_str = lsh.query(mh)  # id list of one group of duplicate sentences
         for i in one_group_ids_str:
             lsh.remove(i)  # for efficiency
