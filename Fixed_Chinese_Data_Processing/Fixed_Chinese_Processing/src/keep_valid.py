@@ -3,11 +3,11 @@
 import pickle
 import json
 
-review_path = 'reviews.pickle'  # resulting from format_amazon.py
-sentence_path = 'sentences.pickle'  # resulting from process_sentence.py
-group_path = 'groups0.9.pickle'  # resulting from group_sentence.py
-ID_path = 'IDs.pickle'  # path to save explanation IDs
-id2exp_path = 'test_id2exp.json'  # path to save id2exp
+review_path = '../result/reviews.pickle'  # resulting from format_amazon.py
+sentence_path = '../result/sentences.pickle'  # resulting from process_sentence.py
+group_path = '../result/groups0.9.pickle'  # resulting from group_sentence.py
+ID_path = '../result/IDs.pickle'  # path to save explanation IDs
+id2exp_path = '../result/test_id2exp.json'  # path to save id2exp
 
 
 reviews = pickle.load(open(review_path, 'rb'))
@@ -22,10 +22,12 @@ for group in exp_id_groups:
         if review_idx not in id2doc:
             review = reviews[review_idx]
             json_doc = {'item': review['item'],
-                        'score': review['score'],
+                        'item_score': float(review['item_score']),
+                        'user_score': float(review['user_score']),
+                        'time': review['time'],
                         'user': review['user'],
-                        'exp_idx': [str(exp_idx)],
-                        'oexp_idx': [str(oexp_idx)]
+                        'exp_idx': [str(exp_idx)], # 该组第一个解释的id
+                        'oexp_idx': [str(oexp_idx)] # 该解释的id
                         }
             id2doc[review_idx] = json_doc
         else:
@@ -40,7 +42,7 @@ for _, doc in id2doc.items():
     exp_idx = doc['exp_idx']
     oexp_idx = doc['oexp_idx']
     idx_set |= set(exp_idx) | set(oexp_idx)
-with open('test_Ids.json', 'w', encoding='utf-8') as f:
+with open('../result/test_Ids.json', 'w', encoding='utf-8') as f:
     json.dump(IDs, f, indent=4, ensure_ascii=False)
 pickle.dump(IDs, open(ID_path, 'wb'))
 
@@ -49,7 +51,7 @@ id2exp = {}
 for idx, sentence in enumerate(sentences):
     idx = str(idx)
     if idx in idx_set:
-        id2exp[idx] = sentence['exp']
+        id2exp[idx] = sentence['row_exp']
 with open(id2exp_path, 'w', encoding='utf-8') as f:
     json.dump(id2exp, f, indent=4, ensure_ascii=False)
 
