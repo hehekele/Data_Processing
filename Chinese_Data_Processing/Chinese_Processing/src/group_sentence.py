@@ -5,8 +5,8 @@ from datasketch import MinHash, LeanMinHash, MinHashLSH
 import datetime
 import pickle
 
-sentence_path = 'sentences.pickle'  # resulting from process_sentence.py
-directory = './'  # directory to save the grouped sentence ids 保存分组句子 id 的目录
+sentence_path = '../result/sentences.pickle'  # resulting from process_sentence.py
+directory = '../result/'  # directory to save the grouped sentence ids 保存分组句子 id 的目录
 sim_thresholds = [0.9]  # the similarity between two near duplicates. To test more in this way [0.9, 0.85, 0.7] 两个接近重复项之间的相似度
 shingle_size = 2  # preserve the word order to some extent
 group_size = 5  # minimum number of sentences in a
@@ -84,7 +84,7 @@ for sim_threshold in sim_thresholds:  # create MinHash for once, when testing mu
 
     print(exp_id_groups)
 
-    with open('test_group.json', 'w', encoding='utf-8') as json_file:
+    with open('../result/test_group.json', 'w', encoding='utf-8') as json_file:
         json.dump(exp_id_groups, json_file, indent=4, ensure_ascii=False)
     pickle.dump(exp_id_groups, open(directory + 'groups{}.pickle'.format(sim_threshold), 'wb'))
     print(now_time() + 'Saved a file for similarity {}'.format(sim_threshold))

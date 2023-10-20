@@ -3,11 +3,11 @@
 import pickle
 import json
 
-review_path = 'reviews.pickle'  # resulting from format_amazon.py
-sentence_path = 'sentences.pickle'  # resulting from process_sentence.py
-group_path = 'groups0.9.pickle'  # resulting from group_sentence.py
-ID_path = 'IDs.pickle'  # path to save explanation IDs
-id2exp_path = 'test_id2exp.json'  # path to save id2exp
+review_path = '../result/reviews.pickle'  # resulting from format_amazon.py
+sentence_path = '../result/sentences.pickle'  # resulting from process_sentence.py
+group_path = '../result/groups0.9.pickle'  # resulting from group_sentence.py
+ID_path = '../result/IDs.pickle'  # path to save explanation IDs
+id2exp_path = '../result/test_id2exp.json'  # path to save id2exp
 
 
 reviews = pickle.load(open(review_path, 'rb'))
@@ -40,7 +40,7 @@ for _, doc in id2doc.items():
     exp_idx = doc['exp_idx']
     oexp_idx = doc['oexp_idx']
     idx_set |= set(exp_idx) | set(oexp_idx)
-with open('test_Ids.json', 'w', encoding='utf-8') as f:
+with open('../result/test_Ids.json', 'w', encoding='utf-8') as f:
     json.dump(IDs, f, indent=4, ensure_ascii=False)
 pickle.dump(IDs, open(ID_path, 'wb'))
 

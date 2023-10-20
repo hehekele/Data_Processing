@@ -5,9 +5,9 @@ import jieba
 import jieba.posseg as pseg
 import thulac
 
-review_path = 'reviews.pickle'  # resulting from format_amazon.py
-sentence_path = 'sentences.pickle'  # path to save sentences
-test_sentences_path = 'test_sentences.json'
+review_path = '../result/reviews.pickle'  # resulting from format_amazon.py
+sentence_path = '../result/sentences.pickle'  # path to save sentences
+test_sentences_path = '../result/test_sentences.json'
 
 # 分句
 def get_sentences(string):

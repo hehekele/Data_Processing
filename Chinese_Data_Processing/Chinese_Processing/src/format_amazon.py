@@ -2,9 +2,9 @@ import json
 import pickle
 import gzip
 
-raw_path = 'test_data_1000.json.gz'  # path to load raw reviews 加载原始评论的路径
-review_path = 'reviews.pickle'  # path to save reviews 保存评论的路径
-test_review_path = 'test_review.json'
+raw_path = '../test_data_1000.json.gz'  # path to load raw reviews 加载原始评论的路径
+review_path = '../result/reviews.pickle'  # path to save reviews 保存评论的路径
+test_review_path = '../result/test_review.json'
 
 reviews = []
 for line in gzip.open(raw_path, 'r'):
