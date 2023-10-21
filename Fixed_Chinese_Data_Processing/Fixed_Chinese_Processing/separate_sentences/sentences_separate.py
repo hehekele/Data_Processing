@@ -6,8 +6,8 @@ import jieba
 
 extract_path = './result/extract.pickle'
 stopwords_path = '../baidu_stopwords.txt'
-test_connect_sentense_path = '../test_connect_sentense.json'
-connect_sentense_path = '../connect_sentense.pickle'
+test_connect_sentense_path = '../src/data/test_processed_sentense.json'
+connect_sentense_path = '../src/data/processed_sentense.pickle'
 
 reviews = pickle.load(open(extract_path, 'rb'))
 

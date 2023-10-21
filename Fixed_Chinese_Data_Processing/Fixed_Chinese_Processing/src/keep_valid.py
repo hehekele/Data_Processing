@@ -3,12 +3,14 @@
 import pickle
 import json
 
-review_path = '../result/reviews.pickle'  # resulting from format_amazon.py
+review_path = '../separate_sentences/result/extract.pickle'  # resulting from format_amazon.py
 sentence_path = '../result/sentences.pickle'  # resulting from process_sentence.py
 group_path = '../result/groups0.9.pickle'  # resulting from group_sentence.py
-ID_path = '../result/IDs.pickle'  # path to save explanation IDs
-id2exp_path = '../result/test_id2exp.json'  # path to save id2exp
+ID_path = './data/IDs.pickle'  # path to save explanation IDs
+id2exp_path = './data/id2exp.json'  # path to save id2exp
 
+test_ID_path = './data/IDs.json'
+test_id2exp_path = './data/id2exp.txt'
 
 reviews = pickle.load(open(review_path, 'rb'))
 sentences = pickle.load(open(sentence_path, 'rb'))
@@ -42,18 +44,28 @@ for _, doc in id2doc.items():
     exp_idx = doc['exp_idx']
     oexp_idx = doc['oexp_idx']
     idx_set |= set(exp_idx) | set(oexp_idx)
-with open('../result/test_Ids.json', 'w', encoding='utf-8') as f:
+
+with open(test_ID_path, 'w', encoding='utf-8') as f:
     json.dump(IDs, f, indent=4, ensure_ascii=False)
 pickle.dump(IDs, open(ID_path, 'wb'))
 
 
+
 id2exp = {}
+id2exp_txt = []
 for idx, sentence in enumerate(sentences):
     idx = str(idx)
     if idx in idx_set:
         id2exp[idx] = sentence['row_exp']
+        data = idx + "::" + sentence['row_exp']
+        id2exp_txt.append(data)
+
 with open(id2exp_path, 'w', encoding='utf-8') as f:
     json.dump(id2exp, f, indent=4, ensure_ascii=False)
+
+with open(test_id2exp_path, 'w', encoding='utf-8') as txt_file:
+    for data in id2exp_txt:
+        txt_file.write(data + '\n')
 
 
 

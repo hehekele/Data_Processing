@@ -7,8 +7,9 @@ import thulac
 
 review_path = '../result/reviews.pickle'  # resulting from format_amazon.py
 sentence_path = '../result/sentences.pickle'  # path to save sentences
-test_sentences_path = '../result/test_sentences.json'
-connect_sentense_path = '../connect_sentense.pickle'
+test_sentence_path = '../result/test_sentences.json'
+processed_sentences_path = './data/processed_sentense.pickle'
+
 
 # 使用jieba库进行词性标注
 def get_sentence_attr(string):
@@ -32,7 +33,7 @@ def get_sentence_attr(string):
     return word_num, pronoun_num, noun_num, adj_num
 sentences = []
 
-reviews = pickle.load(open(connect_sentense_path, 'rb'))
+reviews = pickle.load(open(processed_sentences_path, 'rb'))
 
 for idx, review in enumerate(reviews):
     row_exp = review['row_exp']
@@ -52,7 +53,7 @@ for idx, review in enumerate(reviews):
     }
     sentences.append(sentence)
 
-with open(test_sentences_path, 'w', encoding='utf-8') as json_file:
+with open(test_sentence_path, 'w', encoding='utf-8') as json_file:
     json.dump(sentences, json_file, indent=4, ensure_ascii=False)
 pickle.dump(sentences, open(sentence_path, 'wb'))
 

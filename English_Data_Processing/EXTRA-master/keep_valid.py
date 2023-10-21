@@ -31,7 +31,7 @@ for group in exp_id_groups:
                 'item': review['item'],
                 'rating': review['rating'],
                 'time': review['time'],
-                # exp_idx = list(group)[0]
+                # exp_idx = list(gro1up)[0]
                 # for oexp_idx in group:
                 'exp_idx': [str(exp_idx)],
                 'oexp_idx': [str(oexp_idx)]
