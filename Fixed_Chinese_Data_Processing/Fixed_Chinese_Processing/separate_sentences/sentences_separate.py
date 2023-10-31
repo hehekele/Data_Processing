@@ -1,7 +1,6 @@
 import json
 import pickle
 import re
-
 import jieba
 
 extract_path = './result/extract.pickle'
@@ -11,17 +10,13 @@ connect_sentense_path = '../src/data/processed_sentense.pickle'
 
 reviews = pickle.load(open(extract_path, 'rb'))
 
-# with open('../result/extract.json', 'r', encoding='utf8') as fp:
-#     reviews = json.load(fp)
-
 sentences = []
 stopwords = set()
+# 将句子按照标点符号来分
 def cut_reviews(string):
     string = re.sub('[，。？！、 \n \s , . ! ~ ~ ～]', '。', string)
     sentences = [sent.strip() for sent in string.split('。') if sent.strip() != '']
     return sentences
-
-
 
 idx2 = 0
 for idx, review in enumerate(reviews):
@@ -38,11 +33,9 @@ for idx, review in enumerate(reviews):
         idx2 += 1
         sentences.append(sentence)
 
-
-
+# 分词去停用词
 jieba.initialize()
 jieba.load_userdict("../dict_negative.txt")
-
 # 打开停用词文件并加载数据
 with open(stopwords_path, 'r', encoding='utf-8') as f:
     for line in f:

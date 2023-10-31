@@ -2,7 +2,7 @@
 # 处理源数据的格式
 import json
 
-with open("./三亚吉阳区3413.json", 'r', encoding='utf8') as fp:  # path为json文件路径
+with open("../北京朝阳区66134(1).json", 'r', encoding='utf8') as fp:  # path为json文件路径
     data = json.load(fp)
 
 # 处理数据的函数
@@ -20,7 +20,7 @@ def process_data(data):
 processed_data = process_data(data)
 
 # 将处理后的数据写入JSON文件
-with open('processed_data.json', 'w', encoding='utf-8') as file:
+with open('../北京朝阳区66134(1).json', 'w', encoding='utf-8') as file:
     for item_str in processed_data:
         file.write(item_str + '\n')
 

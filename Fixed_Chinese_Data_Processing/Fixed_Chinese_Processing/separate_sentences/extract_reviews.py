@@ -1,8 +1,9 @@
 import json
 import gzip
 import pickle
+import re
 
-raw_path = '../test_data_1000.json.gz'  # path to load raw reviews 加载原始评论的路径
+raw_path = '../北京朝阳区66134(1).json.gz'  # path to load raw reviews 加载原始评论的路径
 extract_path = './result/extract.pickle'
 
 test_extract_path = './result/test_extract.json'
@@ -11,6 +12,11 @@ test_extract_path = './result/test_extract.json'
 reviews = []
 for line in gzip.open(raw_path, 'r'):
     text = eval(line)
+    check_in_time = text["time"]
+    pattern = r'于(\d{4})年(\d{1,2})月入住'
+    replacement = r'\1-\2'
+    modified_check_in_time = re.sub(pattern, replacement, check_in_time)
+    text["time"] = modified_check_in_time
     json_doc = {'item': text['item_id'],
                 'user': text['user_id'],
                 'time': text['time'],
